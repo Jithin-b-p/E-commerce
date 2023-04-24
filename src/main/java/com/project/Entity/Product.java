@@ -1,11 +1,9 @@
 package com.project.Entity;
 
 import com.project.Enum.ProductCategory;
+import com.project.Enum.ProductStatus;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Entity
@@ -14,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Table(name = "product")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 public class Product {
 
     @Id
@@ -29,7 +28,13 @@ public class Product {
     @Enumerated(EnumType.STRING)
     ProductCategory category;
 
+    @Enumerated(EnumType.STRING)
+    ProductStatus productStatus;
+
     @ManyToOne
     @JoinColumn
     Seller seller;
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
+    Item item;
 }

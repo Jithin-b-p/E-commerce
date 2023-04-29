@@ -1,11 +1,9 @@
 package com.project.Entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "ordered")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 public class Ordered {
 
     @Id
@@ -27,6 +26,7 @@ public class Ordered {
 
     int totalOrderAmount;
 
+    @CreationTimestamp
     LocalDateTime orderDate;
 
     String cardUsed;

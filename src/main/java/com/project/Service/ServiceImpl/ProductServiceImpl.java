@@ -2,10 +2,13 @@ package com.project.Service.ServiceImpl;
 
 import com.project.Dto.RequestDto.ProductRequestDto;
 import com.project.Dto.ResponseDto.ProductResponseDto;
+import com.project.Entity.Item;
+import com.project.Entity.Ordered;
 import com.project.Entity.Product;
 import com.project.Entity.Seller;
 import com.project.Enum.ProductCategory;
 import com.project.Enum.ProductStatus;
+import com.project.Exception.QuantityException;
 import com.project.Exception.SellerNotFoundException;
 import com.project.Repository.ProductRepository;
 import com.project.Repository.SellerRepository;
@@ -63,5 +66,24 @@ public class ProductServiceImpl implements ProductService {
 
         }
         return productResponseDtoList;
+    }
+
+    @Override
+    public void decreaseProductQuantity(Item item) throws QuantityException {
+
+        Product product = item.getProduct();
+        int quantity = item.getRequiredQuantity();
+        int currentQuantity = product.getQuantity();
+
+        if(quantity > currentQuantity){
+            throw new QuantityException("Required quantity exceed current available quantity !!");
+        }
+        product.setQuantity(currentQuantity - quantity);
+
+        //when the quantity become zero.
+        if(product.getQuantity() == 0){
+            product.setProductStatus(ProductStatus.OUT_OF_STOCK);
+        }
+
     }
 }

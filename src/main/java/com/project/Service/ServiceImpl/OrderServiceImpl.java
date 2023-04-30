@@ -111,17 +111,17 @@ public class OrderServiceImpl implements OrderService {
 
             throw new ProductNotExistException("Product doesn't exist");
         }
+        if(product.getProductStatus() != ProductStatus.AVAILABLE){
+
+            throw new QuantityException("Product Out of Stock !!");
+
+        }
 
         if(orderRequestDto.getRequiredQuantity() > product.getQuantity()){
 
             throw new QuantityException("Quantity is less !!");
         }
 
-        if(product.getProductStatus() != ProductStatus.AVAILABLE){
-
-            throw new QuantityException("Product Out of Stock !!");
-
-        }
 
         ItemRequestDto itemRequestDto = new ItemRequestDto(orderRequestDto.getCustomerId(),
                 orderRequestDto.getProductId(), orderRequestDto.getRequiredQuantity());

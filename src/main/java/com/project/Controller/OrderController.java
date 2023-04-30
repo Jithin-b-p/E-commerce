@@ -21,9 +21,15 @@ public class OrderController {
     OrderService orderService;
     //API to order items individually
     @PostMapping("/place")
-    public ResponseEntity placeDirectOrder(@RequestBody OrderRequestDto orderRequestDto) throws InvalidCustomerException, ProductNotExistException, QuantityException, InvalidCardException {
+    public ResponseEntity placeDirectOrder(@RequestBody OrderRequestDto orderRequestDto){
 
-        OrderResponseDto orderResponseDto = orderService.placeOrder(orderRequestDto);
-        return new ResponseEntity(orderResponseDto, HttpStatus.ACCEPTED);
+        try{
+            OrderResponseDto orderResponseDto = orderService.placeOrder(orderRequestDto);
+            return new ResponseEntity(orderResponseDto, HttpStatus.ACCEPTED);
+        }catch (Exception e){
+
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
     }
 }

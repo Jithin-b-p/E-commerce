@@ -41,9 +41,14 @@ public class CartController {
     }
 
     @PostMapping("/checkout")
-    public ResponseEntity checkOutCart(@RequestBody CheckOutCartRequestDto checkOutCartRequestDto) throws Exception {
+    public ResponseEntity checkOutCart(@RequestBody CheckOutCartRequestDto checkOutCartRequestDto){
 
-        OrderResponseDto orderResponseDto = cartService.checkOutCart(checkOutCartRequestDto);
-        return new ResponseEntity(orderResponseDto, HttpStatus.ACCEPTED);
+        try {
+            OrderResponseDto orderResponseDto = cartService.checkOutCart(checkOutCartRequestDto);
+            return new ResponseEntity(orderResponseDto, HttpStatus.ACCEPTED);
+        }catch (Exception e){
+
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

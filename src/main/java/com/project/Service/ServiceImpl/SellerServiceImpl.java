@@ -1,14 +1,20 @@
 package com.project.Service.ServiceImpl;
 
 import com.project.Dto.RequestDto.SellerRequestDto;
+import com.project.Dto.ResponseDto.GetAllSellersDto;
+import com.project.Dto.ResponseDto.GetSellerResponseDto;
 import com.project.Dto.ResponseDto.SellerResponseDto;
 import com.project.Entity.Seller;
 import com.project.Exception.EmailAlreadyPresentException;
+import com.project.Exception.SellerNotFoundException;
 import com.project.Repository.SellerRepository;
 import com.project.Service.SellerService;
 import com.project.Transformer.SellerTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SellerServiceImpl implements SellerService {
@@ -35,4 +41,47 @@ public class SellerServiceImpl implements SellerService {
 
 
     }
+
+    @Override
+    public GetSellerResponseDto getSellerByEmail(String email) throws SellerNotFoundException {
+
+        Seller seller = sellerRepository.findByEmail(email);
+        if(seller == null){
+            throw new SellerNotFoundException("Invalid EmailID !!");
+        }
+
+        return SellerTransformer.SellerToGetSellerResponseDto(seller);
+
+    }
+
+    @Override
+    public GetAllSellersDto getAllSellers() {
+
+        List<Seller> sellersList = sellerRepository.findAll();
+
+        List<GetSellerResponseDto> getAllSellerResponseDtoList = new ArrayList<>();
+        for(Seller seller: sellersList){
+
+            getAllSellerResponseDtoList.add(SellerTransformer.SellerToGetSellerResponseDto(seller));
+
+        }
+
+        GetAllSellersDto getAllSellersDto = new GetAllSellersDto(getAllSellerResponseDtoList);
+
+        return getAllSellersDto;
+    }
+
+    @Override
+    public void deleteSellerByEmail(String email) throws SellerNotFoundException {
+
+        Seller seller = sellerRepository.findByEmail(email);
+        if(seller == null){
+            throw new SellerNotFoundException("Invalid EmailID !!");
+        }
+
+        //deleting seller will also delete product and item (parent - child)
+        sellerRepository.delete(seller);
+    }
+
+
 }

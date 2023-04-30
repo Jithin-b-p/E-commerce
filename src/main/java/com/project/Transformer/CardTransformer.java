@@ -13,6 +13,7 @@ public class CardTransformer {
                 .cardNo(cardRequestDto.getCardNo())
                 .cardType(cardRequestDto.getCardType())
                 .cvv(cardRequestDto.getCvv())
+                .expiryDate(cardRequestDto.getExpireDate())
                 .build();
     }
 

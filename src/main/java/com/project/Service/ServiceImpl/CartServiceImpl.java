@@ -108,9 +108,10 @@ public class CartServiceImpl implements CartService {
             Ordered order = orderService.placeOrder(customer, card);
 
             customer.getOrderList().add(order);
-            Ordered savedOrder = orderedRepository.save(order);
             //reset cart
             resetCart(cart);
+
+            Ordered savedOrder = orderedRepository.save(order);
 
             OrderResponseDto orderResponseDto = OrderTransformer.orderToOrderResponseDto(savedOrder);
 
@@ -138,7 +139,6 @@ public class CartServiceImpl implements CartService {
 
         cart.setTotalAmount(0);
         cart.setNumberOfItems(0);
-        cart.setItemList(new ArrayList<>());
 
     }
 }

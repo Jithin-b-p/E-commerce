@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -25,7 +25,7 @@ public class Card {
     @Column(nullable = false, unique = true)
     String cardNo;
 
-    LocalDateTime expiryDate;
+    LocalDate expiryDate;
 
     @Enumerated(EnumType.STRING)
     CardType cardType;

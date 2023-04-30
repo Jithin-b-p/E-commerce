@@ -40,7 +40,7 @@ public class CartController {
 
     }
 
-    @PostMapping("/checkOut")
+    @PostMapping("/checkout")
     public ResponseEntity checkOutCart(@RequestBody CheckOutCartRequestDto checkOutCartRequestDto) throws Exception {
 
         OrderResponseDto orderResponseDto = cartService.checkOutCart(checkOutCartRequestDto);

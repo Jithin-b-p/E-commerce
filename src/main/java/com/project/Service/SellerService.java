@@ -9,13 +9,20 @@ import com.project.Exception.SellerNotFoundException;
 import com.project.Repository.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 public interface SellerService {
 
-    public SellerResponseDto addSeller(SellerRequestDto sellerRequestDto) throws EmailAlreadyPresentException;
+    SellerResponseDto addSeller(SellerRequestDto sellerRequestDto) throws EmailAlreadyPresentException;
 
-    public GetSellerResponseDto getSellerByEmail(String email) throws SellerNotFoundException;
+    GetSellerResponseDto updateSellerMobNoByEmail(String email, String mobNo) throws SellerNotFoundException;
 
-    public GetAllSellersDto getAllSellers();
+    GetSellerResponseDto getSellerByEmail(String email) throws SellerNotFoundException;
 
-    public void deleteSellerByEmail(String email) throws SellerNotFoundException;
+    GetAllSellersDto getAllSellers();
+
+    List<GetSellerResponseDto> findSellerBelowCertainAge(int age) throws Exception;
+
+    void deleteSellerByEmail(String email) throws SellerNotFoundException;
 }
+

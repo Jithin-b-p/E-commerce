@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/seller")
 public class SellerController {
@@ -29,6 +31,20 @@ public class SellerController {
         }catch (Exception e){
 
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //updating seller mobNo with email.
+    @PutMapping("/updateSeller")
+    public ResponseEntity updateSellerByEmail(@RequestParam("email") String email, @RequestParam("mobNo") String mobNo){
+
+        try{
+            GetSellerResponseDto getsellerResponseDto = sellerService.updateSellerMobNoByEmail(email, mobNo);
+            return new ResponseEntity(getsellerResponseDto, HttpStatus.ACCEPTED);
+
+        }catch(SellerNotFoundException e){
+
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -57,7 +73,22 @@ public class SellerController {
 
     }
 
-    //delete seller by email
+    //finding sellers of less than particular age.
+    @GetMapping("/getLessThanAge/{age}")
+    public ResponseEntity getSellersBelowCertainAge(@PathVariable(name = "age") int age){
+
+        try{
+            List<GetSellerResponseDto> getSellerResponseDtoList = sellerService.findSellerBelowCertainAge(age);
+            return new ResponseEntity(getSellerResponseDtoList, HttpStatus.OK);
+
+        } catch (Exception e) {
+
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+
+        }
+    }
+
+    //delete seller by email API
     @DeleteMapping("/delete/{email}")
     public ResponseEntity deleteSellerByEmail(@PathVariable("email") String email){
 
@@ -72,4 +103,6 @@ public class SellerController {
 
         }
     }
+
+
 }

@@ -43,6 +43,24 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
+    public GetSellerResponseDto updateSellerMobNoByEmail(String email, String mobNo) throws SellerNotFoundException {
+
+        Seller seller = sellerRepository.findByEmail(email);
+        if(seller == null){
+
+            throw new SellerNotFoundException("Invalid EmailID !!");
+
+        }
+
+        seller.setMobNo(mobNo);
+
+        Seller savedSeller = sellerRepository.save(seller);
+
+        return SellerTransformer.SellerToGetSellerResponseDto(savedSeller);
+
+    }
+
+    @Override
     public GetSellerResponseDto getSellerByEmail(String email) throws SellerNotFoundException {
 
         Seller seller = sellerRepository.findByEmail(email);
@@ -72,6 +90,28 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
+    public List<GetSellerResponseDto> findSellerBelowCertainAge(int age) throws Exception {
+
+        List<Seller> sellerList = sellerRepository.findByAgeLessThan(age);
+
+        if(sellerList.isEmpty()){
+
+            throw new Exception("Sellers Of that age don't exist");
+
+        }
+
+        List<GetSellerResponseDto> getSellerResponseDtoList = new ArrayList<>();
+
+        sellerList.forEach((seller) -> {
+
+            getSellerResponseDtoList.add(SellerTransformer.SellerToGetSellerResponseDto(seller));
+
+        });
+
+        return getSellerResponseDtoList;
+    }
+
+    @Override
     public void deleteSellerByEmail(String email) throws SellerNotFoundException {
 
         Seller seller = sellerRepository.findByEmail(email);
@@ -82,6 +122,8 @@ public class SellerServiceImpl implements SellerService {
         //deleting seller will also delete product and item (parent - child)
         sellerRepository.delete(seller);
     }
+
+
 
 
 }

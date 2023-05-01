@@ -1,6 +1,7 @@
 package com.project.Transformer;
 
 import com.project.Dto.RequestDto.ProductRequestDto;
+import com.project.Dto.ResponseDto.ProductOutOfStockResponseDto;
 import com.project.Dto.ResponseDto.ProductResponseDto;
 import com.project.Entity.Product;
 import com.project.Enum.ProductStatus;
@@ -26,6 +27,14 @@ public class ProductTransformer {
                 .productName(product.getName())
                 .quantity(product.getQuantity())
                 .productStatus(product.getProductStatus())
+                .sellerName(product.getSeller().getName())
+                .build();
+    }
+
+    public static ProductOutOfStockResponseDto productToProductOutOfStockResponseDto(Product product){
+
+        return ProductOutOfStockResponseDto.builder()
+                .productName(product.getName())
                 .sellerName(product.getSeller().getName())
                 .build();
     }
